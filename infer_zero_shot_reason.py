@@ -179,7 +179,7 @@ for k1, v1 in data.items():
 
 with open(
     os.path.join(
-        "enhanced_analysis",
+        "data",
         DATA_FILE.replace(".json", "")
         + "_"
         + LLM_NAME.split("/")[-1]
