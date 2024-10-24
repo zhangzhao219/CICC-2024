@@ -15,10 +15,9 @@ MODEL_PATH = "/mnt/data1/model"
 
 LLM_DICT = {
     "01ai/Yi-1___5-34B-Chat-16K": (ModelType.yi_1_5_34b_chat_16k, 4, 16384),
-    "deepseek-ai/DeepSeek-V2___5": (ModelType.deepseek_v2_5, 4),
-    "Shanghai_AI_Laboratory/internlm2_5-20b-chat": (ModelType.internlm2_5_20b_chat, 4, 32768),
+    "deepseek-ai/DeepSeek-V2___5": (ModelType.deepseek_v2_5, 4, 16384),
     "qwen/Qwen2___5-72B-Instruct": (ModelType.qwen2_5_72b_instruct, 8, 32768),
-    "qwen/Qwen2___5-7B-Instruct": (ModelType.qwen2_5_7b_instruct, 4),
+    "qwen/Qwen2___5-7B-Instruct": (ModelType.qwen2_5_7b_instruct, 4, 32768),
 }
 
 LLM_NAME = sys.argv[1]
@@ -31,7 +30,7 @@ llm_engine = get_vllm_engine(
     gpu_memory_utilization=0.95,
     tensor_parallel_size=LLM_DICT[LLM_NAME][1],
     engine_kwargs={"distributed_executor_backend": "ray"},
-    # max_model_len=LLM_DICT[LLM_NAME][2],
+    max_model_len=LLM_DICT[LLM_NAME][2],
 )
 template_type = get_default_template_type(model_type)
 template = get_template(template_type, llm_engine.hf_tokenizer)

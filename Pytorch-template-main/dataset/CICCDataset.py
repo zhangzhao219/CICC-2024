@@ -1,8 +1,8 @@
 import os
-import torch
 import json
+import torch
+import random
 from torch.utils.data import Dataset
-from typing import Dict
 from utils.rich_tqdm import progress
 from utils.get_bert_and_tokenizer import getTokenizer
 
@@ -32,7 +32,7 @@ class CICCDataset(Dataset):
                 for k3, v3 in v2["Dialog"].items():
                     flatten_data.append(data[k1][k2]["Dialog"][k3])
 
-        texts = [line["output"] for line in flatten_data]
+        texts = [line["Text"] + " " + line["output"] for line in flatten_data]
 
         try:
             labels_str = [line["EmoAnnotation"] for line in flatten_data]
@@ -40,6 +40,30 @@ class CICCDataset(Dataset):
         except:
             logger.warning("Missing Data Label")
             labels = [-1 for line in flatten_data]
+
+        if args["mode"] == "train" and "train" in file_path:
+            type_dict = {}
+            max_num = 0
+            for index, text_now in enumerate(texts):
+                labels_str_now = labels_str[index]
+                labels_now = labels[index]
+                if labels_now not in type_dict:
+                    type_dict[labels_now] = []
+                type_dict[labels_now].append((text_now, labels_str_now, labels_now))
+                max_num = max(max_num, len(type_dict[labels_now]))
+
+            texts = []
+            labels_str = []
+            labels = []
+            for label, text_type_list in type_dict.items():
+                if len(text_type_list) < max_num:
+                    type_dict[label].extend(
+                        random.choices(text_type_list, k=max_num - len(text_type_list))
+                    )
+                for i, j, k in type_dict[label]:
+                    texts.append(i)
+                    labels_str.append(j)
+                    labels.append(k)
 
         self.dataset_len = len(texts)
         batch_encoding = tokenizer(

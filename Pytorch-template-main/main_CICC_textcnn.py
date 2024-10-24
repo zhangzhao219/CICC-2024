@@ -1,8 +1,8 @@
 import os
 import argparse
 from utils.rich_tqdm import progress
-from dataset.TextCNNDataset import TextCNNDataset
-from model.TextCNN import TextCNN
+from dataset.CICCDataset import CICCDataset
+from model.CICC_TextCNN import CICC_TextCNN
 from trainer import Trainer
 from utils.config import get_config
 from torch.distributed import destroy_process_group
@@ -18,35 +18,26 @@ if __name__ == "__main__":
     args = get_config(args)
     args["logger"].info(f"Passed args {args}")
 
-    train_dataset = TextCNNDataset(
+    train_dataset = CICCDataset(
         args=args,
         file_path=os.path.join(
             args["data_path"]["data_dir"], args["data_path"]["train"]
         ),
-        vocab_path=os.path.join(
-            args["data_path"]["data_dir"], args["data_path"]["vocab"]
-        ),
         max_length=args["CICC"]["max_length"],
     )
 
-    eval_dataset = TextCNNDataset(
+    eval_dataset = CICCDataset(
         args=args,
         file_path=os.path.join(
             args["data_path"]["data_dir"], args["data_path"]["eval"]
         ),
-        vocab_path=os.path.join(
-            args["data_path"]["data_dir"], args["data_path"]["vocab"]
-        ),
         max_length=args["CICC"]["max_length"],
     )
 
-    test_dataset = TextCNNDataset(
+    test_dataset = CICCDataset(
         args=args,
         file_path=os.path.join(
             args["data_path"]["data_dir"], args["data_path"]["test"]
-        ),
-        vocab_path=os.path.join(
-            args["data_path"]["data_dir"], args["data_path"]["vocab"]
         ),
         max_length=args["CICC"]["max_length"],
     )
@@ -56,7 +47,7 @@ if __name__ == "__main__":
 
     trainer = Trainer(
         args=args,
-        model=TextCNN(
+        model=CICC_TextCNN(
             logger=args["logger"],
             dropout=args["dropout"],
             kwargs=args["CICC"],
