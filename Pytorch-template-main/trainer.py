@@ -10,6 +10,7 @@ from torch.utils.data.distributed import DistributedSampler
 from torch.distributed import all_gather_object, barrier
 from transformers import get_scheduler
 import pandas as pd
+import numpy as np
 
 from torch.utils.tensorboard import SummaryWriter
 from typing import Optional, Union
@@ -87,25 +88,21 @@ class Trainer:
         # 校验训练数据集
         if train_dataset is None and self.mode == "train":
             self.logger.error("No Train Dataset Passed")
-            return
         self.train_dataset = train_dataset
 
         # 校验验证数据集
         if eval_dataset is None and self.mode == "eval":
             self.logger.error("No Eval Dataset Passed")
-            return
         self.eval_dataset = eval_dataset
 
         # 校验测试数据集
         if test_dataset is None and self.mode == "test":
             self.logger.error("No Test Dataset Passed")
-            return
         self.test_dataset = test_dataset
 
         # 校验预测的数据集
         if predict_dataset is None and self.mode == "predict":
             self.logger.error("No Predict Dataset Passed")
-            return
         self.predict_dataset = predict_dataset
 
         (
@@ -214,6 +211,22 @@ class Trainer:
                 dataset,
                 batch_size=batch_size,
                 shuffle=True,
+                drop_last=False,
+            )
+    # 准备DataLoader
+    def _prepare_no_shuffle_dataloader(self, dataset: Dataset, batch_size: int):
+        if self.gpu_id is not None:
+            return DataLoader(
+                dataset,
+                batch_size=batch_size,
+                drop_last=False,
+                sampler=DistributedSampler(dataset=dataset, seed=self.args["seed"], shuffle=False),
+            )
+        else:
+            return DataLoader(
+                dataset,
+                batch_size=batch_size,
+                shuffle=False,
                 drop_last=False,
             )
 
@@ -343,15 +356,15 @@ class Trainer:
         #     description="Train Eval Step", total=len(self.train_eval_dataloader)
         # )
 
-        # self.eval_dataloader = self._prepare_dataloader(
-        #     self.eval_dataset, self.args["batch_size"]["eval"]
-        # )
-        # rich_eval_step_id = progress.add_task(
-        #     description="Eval Step", total=len(self.eval_dataloader)
-        # )
+        self.eval_dataloader = self._prepare_no_shuffle_dataloader(
+            self.eval_dataset, self.args["batch_size"]["eval"]
+        )
+        rich_eval_step_id = progress.add_task(
+            description="Eval Step", total=len(self.eval_dataloader)
+        )
 
         if self.test_dataset is not None:
-            self.test_dataloader = self._prepare_dataloader(
+            self.test_dataloader = self._prepare_no_shuffle_dataloader(
                 self.test_dataset, self.args["batch_size"]["eval"]
             )
             rich_test_step_id = progress.add_task(
@@ -368,11 +381,25 @@ class Trainer:
         #     dataloader=self.train_eval_dataloader, task_id=rich_train_eval_step_id
         # )
         # self.logger.info(f"Train Eval Metrics: {metrics}")
-        # # 评估模型在验证集上面的效果
-        # metrics = self._eval_one_epoch(
-        #     dataloader=self.eval_dataloader, task_id=rich_eval_step_id
-        # )
-        # self.logger.info(f"Eval Metrics: {metrics}")
+        # 评估模型在验证集上面的效果
+        metrics = self._eval_one_epoch(
+            dataloader=self.eval_dataloader, task_id=rich_eval_step_id
+        )
+        self.logger.info(f"Eval Metrics: {metrics}")
+
+        data_predict = self._predict_one_epoch(
+            dataloader=self.eval_dataloader, task_id=rich_eval_step_id
+        )
+
+        pd.DataFrame(np.array(data_predict)).to_csv(
+            os.path.join(
+                self.args["data_path"]["data_dir"],
+                "result",
+                "val_data_" + self.args["datetime"] + ".csv",
+            ),
+            index=None,
+        )
+
         # 评估模型在测试集上面的效果
         if self.test_dataset is not None:
             metrics_test = self._eval_one_epoch(
@@ -382,7 +409,7 @@ class Trainer:
 
     # 预测主函数
     def predict(self):
-        self.predict_dataloader = self._prepare_dataloader(
+        self.predict_dataloader = self._prepare_no_shuffle_dataloader(
             self.predict_dataset, self.args["batch_size"]["predict"]
         )
         rich_predict_step_id = progress.add_task(
@@ -397,19 +424,15 @@ class Trainer:
         data_predict = self._predict_one_epoch(
             dataloader=self.predict_dataloader, task_id=rich_predict_step_id
         )
-        with open(
+
+        pd.DataFrame(np.array(data_predict)).to_csv(
             os.path.join(
                 self.args["data_path"]["data_dir"],
-                self.args["data_path"]["predict_save_path"],
+                "result",
+                "test_data_" + self.args["datetime"] + ".csv",
             ),
-            "w",
-        ) as f:
-            json.dump(
-                {"keywords": "test NLI task", "example": data_predict},
-                f,
-                ensure_ascii=False,
-                indent=2,
-            )
+            index=None,
+        )
         self.logger.info("Predict Finished")
 
     # 训练一轮辅助函数
@@ -471,23 +494,11 @@ class Trainer:
     # 预测一轮辅助函数
     def _predict_one_epoch(self, task_id, dataloader):
         self.model.eval()
-
         progress.reset(task_id)
-
         result_list = []
-
         for _, eval_data in enumerate(dataloader):
             real_data, eval_result = self._one_batch(eval_data, "predict")
-            temp_json = {}
-            temp_json["idx"] = real_data["idx"].item()
-            temp_json["premise"] = real_data["premise"][0]
-            temp_json["hypothesis"] = real_data["hypothesis"][0]
-            if eval_result[-1] == [0]:
-                temp_json["label"] = 0
-            else:
-                temp_json["label"] = 2
-            # print(temp_json)
-            result_list.append(temp_json)
+            result_list.append(np.append(eval_result[1].squeeze(), eval_result[0][0]))
             progress.update(task_id=task_id, advance=1)
         return result_list
 

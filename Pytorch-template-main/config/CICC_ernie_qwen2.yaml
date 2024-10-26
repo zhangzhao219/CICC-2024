@@ -4,9 +4,9 @@ batch_size:
   eval: 128
 data_path:
   data_dir: "/mnt/data3/zz/cicc/"
-  train: "data/train_data_Yi-1___5-34B-Chat-16K_analysis.json"
-  eval: "data/val_data_Yi-1___5-34B-Chat-16K_analysis.json"
-  test: "data/test_data_Yi-1___5-34B-Chat-16K_analysis.json"
+  train: "data/train_data_Qwen2-72B-Instruct_analysis.json"
+  eval: "data/val_data_Qwen2-72B-Instruct_analysis.json"
+  test: "data/test_data_Qwen2-72B-Instruct_analysis.json"
   predict: ""
 model_path:
   pretrained_model_dir: "/mnt/data1/model/"

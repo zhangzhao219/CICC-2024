@@ -1,13 +1,13 @@
-mode: "train"
+mode: "test"
 batch_size:
   train: 16
-  eval: 128
+  eval: 1
+  predict: 1
 data_path:
   data_dir: "/mnt/data3/zz/cicc/"
-  train: "data/train_data_Yi-1___5-34B-Chat-16K_analysis.json"
-  eval: "data/val_data_Yi-1___5-34B-Chat-16K_analysis.json"
-  test: "data/test_data_Yi-1___5-34B-Chat-16K_analysis.json"
-  predict: ""
+  train: "data/train_data_Qwen2___5-72B-Instruct_analysis.json"
+  eval: "data/val_data_Qwen2___5-72B-Instruct_analysis.json"
+  test: "data/test_data_Qwen2___5-72B-Instruct_analysis.json"
 model_path:
   pretrained_model_dir: "/mnt/data1/model/"
   pretrained_model: "ernie-3___0-xbase-zh"

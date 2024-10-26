@@ -1,6 +1,6 @@
 mode: "train"
 batch_size:
-  train: 128
+  train: 2
   eval: 2482
 data_path:
   data_dir: "/mnt/data3/zz/cicc/"
@@ -21,11 +21,11 @@ scheduler:
   ratio: 0.1
 metrics: "ClassificationReport"
 main_metric: "macro_avg_f1-score"
-max_epochs: 50
+max_epochs: 20
 seed: 42
-early_stop: 50
+early_stop: 20
 lr: 0.00005
-dropout: 0.8
+dropout: 0.6
 CICC:
   max_length: 512
   num_classes: 7

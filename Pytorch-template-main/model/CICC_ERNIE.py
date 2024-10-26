@@ -34,3 +34,8 @@ class CICC_ERNIE(nn.Module):
                 labels.cpu().numpy().tolist(),
                 output.argmax(dim=-1).cpu().numpy().tolist(),
             )
+        elif mode == "predict":
+            return (
+                labels.cpu().numpy().tolist(),
+                output.cpu().numpy(),
+            )

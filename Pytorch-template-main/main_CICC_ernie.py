@@ -60,14 +60,15 @@ if __name__ == "__main__":
         train_dataset=train_dataset,
         eval_dataset=eval_dataset,
         test_dataset=None,
-        predict_dataset=None,
+        predict_dataset=test_dataset,
     )
 
     if args["mode"] == "train":
         trainer.train()
     elif args["mode"] == "eval":
         trainer.eval()
-    elif args["mode"] == "predict":
+    elif args["mode"] == "test":
+        trainer.eval()
         trainer.predict()
     else:
         args["logger"].info(f"Unrecognized trainer mode: {args['mode']}")
