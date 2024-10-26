@@ -1,2 +1,2 @@
 bash template_eval.sh CICC_ernie_qwen25_test.yaml main_CICC_ernie.py 2024_10_25_15_33_35
-bash template_eval.sh CICC_textcnn_qwen25_test.yaml main_CICC_textcnn.py 2024_10_26_01_11_19
+# bash template_eval.sh CICC_textcnn_qwen25_test.yaml main_CICC_textcnn.py 2024_10_26_01_11_19

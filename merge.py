@@ -76,5 +76,5 @@ if MODE == "test":
                     global_index
                 ]
                 global_index += 1
-    with open(os.path.join(RESULT_FOLDER, f"{MODE}_data.json"), "w") as f:
+    with open(os.path.join(RESULT_FOLDER, f"test_label.json"), "w") as f:
         json.dump(ori_data, f, ensure_ascii=False, indent=4)
