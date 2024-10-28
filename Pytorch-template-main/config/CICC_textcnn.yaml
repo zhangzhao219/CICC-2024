@@ -1,0 +1,36 @@
+mode: "train"
+batch_size:
+  train: 1024
+  eval: 2482
+data_path:
+  data_dir: "/mnt/data3/zz/cicc/"
+  train: "data/train_data_Qwen2___5-72B-Instruct_analysis.json"
+  eval: "data/val_data_Qwen2___5-72B-Instruct_analysis.json"
+  test: "data/test_data_Qwen2___5-72B-Instruct_analysis.json"
+  predict: ""
+model_path:
+  pretrained_model_dir: "/mnt/data1/model/"
+  tokenizer: "ernie-3___0-xbase-zh"
+  save: True
+  snapshot_dir: "save_models"
+  snapshot: "best_snapshot.pt"
+criterion: "CrossEntropyLoss"
+optimizer: "AdamW"
+scheduler:
+  name: "linear"
+  ratio: 0.1
+metrics: "ClassificationReport"
+main_metric: "macro_avg_f1-score"
+max_epochs: 20
+seed: 42
+early_stop: 20
+lr: 0.00005
+dropout: 0.5
+CICC:
+  max_length: 512
+  num_classes: 7
+  embedding_dim: 256
+  num_filters: 512
+  vocab_size: 39980
+  kernel_size: 4
+  hidden_dim: 512
