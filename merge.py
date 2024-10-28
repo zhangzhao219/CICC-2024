@@ -66,7 +66,7 @@ MERGE_FILE_LIST = [
 
 def combine(temp_list):
     end_list = []
-    for i in range(2, 3):
+    for i in range(2, len(MERGE_FILE_LIST)):
         print(i)
         temp_list2 = []
         for c in combinations(temp_list, i):
