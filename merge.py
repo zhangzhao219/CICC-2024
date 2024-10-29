@@ -103,9 +103,9 @@ result_data_list = np.array(result_data_list)
 def combine(temp_list):
     end_list = []
     for i in tqdm(range(2, 6)):
-        a = combinations([i for i in range(len(temp_list))], i)
+        a = combinations([j for j in range(len(temp_list))], i)
         for c in tqdm(list(a)):
-            now_list = [False for i in range(len(temp_list))]
+            now_list = [False for j in range(len(temp_list))]
             for c2 in c:
                 now_list[c2] = True
             end_list.append(np.array(now_list))
