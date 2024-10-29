@@ -1,5 +1,7 @@
 import os
+import sys
 import json
+import random
 import pandas as pd
 import numpy as np
 from sklearn.metrics import classification_report
@@ -102,7 +104,7 @@ result_data_list = np.array(result_data_list)
 
 def combine(temp_list):
     end_list = []
-    for i in tqdm(range(2, 6)):
+    for i in tqdm(range(int(sys.argv[1]), int(sys.argv[2]))):
         a = combinations([j for j in range(len(temp_list))], i)
         for c in tqdm(list(a)):
             now_list = [False for j in range(len(temp_list))]
@@ -113,6 +115,9 @@ def combine(temp_list):
 
 
 SUB_MERGE_FILE_LIST = combine(MERGE_FILE_LIST)
+
+random.seed(0)
+random.shuffle(SUB_MERGE_FILE_LIST)
 
 max_score = 0
 NOW_MERGE_FILE_LIST = []
