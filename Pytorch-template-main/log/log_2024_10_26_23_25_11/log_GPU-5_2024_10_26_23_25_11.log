@@ -1,0 +1,54 @@
+2024-10-26 23:25:19.435 | GPU-5 | INFO    | utils.config:ddp_variables:73 - LOCAL_RANK:1
+2024-10-26 23:25:19.435 | GPU-5 | INFO    | utils.config:ddp_variables:73 - RANK:1
+2024-10-26 23:25:19.435 | GPU-5 | INFO    | utils.config:ddp_variables:73 - GROUP_RANK:0
+2024-10-26 23:25:19.435 | GPU-5 | INFO    | utils.config:ddp_variables:73 - ROLE_RANK:1
+2024-10-26 23:25:19.435 | GPU-5 | INFO    | utils.config:ddp_variables:73 - LOCAL_WORLD_SIZE:2
+2024-10-26 23:25:19.436 | GPU-5 | INFO    | utils.config:ddp_variables:73 - WORLD_SIZE:2
+2024-10-26 23:25:19.436 | GPU-5 | INFO    | utils.config:ddp_variables:73 - ROLE_WORLD_SIZE:2
+2024-10-26 23:25:19.436 | GPU-5 | INFO    | utils.config:ddp_variables:73 - MASTER_ADDR:127.0.0.1
+2024-10-26 23:25:19.436 | GPU-5 | INFO    | utils.config:ddp_variables:73 - MASTER_PORT:11017
+2024-10-26 23:25:19.439 | GPU-5 | INFO    | __main__:<module>:19 - Passed args {'mode': 'train', 'batch_size': {'train': 16, 'eval': 128}, 'data_path': {'data_dir': '/mnt/data3/zz/cicc/', 'train': 'data/train_data_Qwen2-72B-Instruct_analysis.json', 'eval': 'data/val_data_Qwen2-72B-Instruct_analysis.json', 'test': 'data/test_data_Qwen2-72B-Instruct_analysis.json', 'predict': ''}, 'model_path': {'pretrained_model_dir': '/mnt/data1/model/', 'pretrained_model': 'ernie-3___0-xbase-zh', 'tokenizer': 'ernie-3___0-xbase-zh', 'save': True, 'snapshot_dir': 'save_models', 'snapshot': 'best_snapshot.pt'}, 'criterion': 'CrossEntropyLoss', 'optimizer': 'AdamW', 'scheduler': {'name': 'linear', 'ratio': 0.1}, 'metrics': 'ClassificationReport', 'main_metric': 'macro_avg_f1-score', 'max_epochs': 10, 'seed': 42, 'early_stop': 10, 'lr': 5e-06, 'dropout': 0.8, 'CICC': {'max_length': 1024, 'num_classes': 7}, 'logger': <loguru.logger handlers=[(id=1, level=5, sink=<lambda>), (id=2, level=10, sink='log/log_2024_10_26_23_25_11/log_GPU-5_2024_10_26_23_25_11.log')]>, 'device': 'GPU-5', 'global_device': 'GPU-4', 'world_size': 2, 'datetime': '2024_10_26_23_25_11'}
+2024-10-26 23:25:19.440 | GPU-5 | INFO    | utils.get_bert_and_tokenizer:getTokenizer:29 - load /mnt/data1/model/ernie-3___0-xbase-zh tokenizer
+2024-10-26 23:25:19.490 | GPU-5 | INFO    | dataset.CICCDataset:__init__:24 - Creating features from dataset file at /mnt/data3/zz/cicc/data/train_data_Qwen2-72B-Instruct_analysis.json
+2024-10-26 23:25:40.993 | GPU-5 | INFO    | utils.get_bert_and_tokenizer:getTokenizer:29 - load /mnt/data1/model/ernie-3___0-xbase-zh tokenizer
+2024-10-26 23:25:41.078 | GPU-5 | INFO    | dataset.CICCDataset:__init__:24 - Creating features from dataset file at /mnt/data3/zz/cicc/data/val_data_Qwen2-72B-Instruct_analysis.json
+2024-10-26 23:25:41.855 | GPU-5 | INFO    | utils.get_bert_and_tokenizer:getTokenizer:29 - load /mnt/data1/model/ernie-3___0-xbase-zh tokenizer
+2024-10-26 23:25:41.928 | GPU-5 | INFO    | dataset.CICCDataset:__init__:24 - Creating features from dataset file at /mnt/data3/zz/cicc/data/test_data_Qwen2-72B-Instruct_analysis.json
+2024-10-26 23:25:41.940 | GPU-5 | WARNING | dataset.CICCDataset:__init__:41 - Missing Data Label
+2024-10-26 23:25:42.635 | GPU-5 | INFO    | __main__:<module>:45 - ({'input_ids': tensor([226, 957, 614,  ...,   0,   0,   0]), 'token_type_ids': tensor([0, 0, 0,  ..., 0, 0, 0]), 'attention_mask': tensor([1, 1, 1,  ..., 0, 0, 0]), 'labels': tensor(1)}, {'text': '你笑什么？我在问你话呢 陈江河在这句话中表现出了一种轻微的生气情绪，因为他正在询问骆玉珠为什么笑，同时强调自己在问她问题，似乎对于她的笑声有些不满或者感到被忽视了。因此情感标签应为【生气】。', 'label_str': 'Anger'})
+2024-10-26 23:25:42.644 | GPU-5 | INFO    | __main__:<module>:46 - ({'input_ids': tensor([ 75,   5, 240,  ...,   0,   0,   0]), 'token_type_ids': tensor([0, 0, 0,  ..., 0, 0, 0]), 'attention_mask': tensor([1, 1, 1,  ..., 0, 0, 0]), 'labels': tensor(5)}, {'text': '我的两百美金没了 陆远在说他的两百美金没了，这通常会让人感到不悦或沮丧，因为丢失财物是一种负面的经历。因此，情感标签应为【伤心】。', 'label_str': 'Sad'})
+2024-10-26 23:25:42.645 | GPU-5 | INFO    | utils.get_bert_and_tokenizer:getBert:21 - load /mnt/data1/model/ernie-3___0-xbase-zh
+2024-10-26 23:25:42.811 | GPU-5 | WARNING | trainer:_load_snapshot:575 - save_models/2024_10_26_23_25_11 not exist, Initialize from Scratch
+2024-10-26 23:25:43.572 | GPU-5 | INFO    | trainer:_get_optimizer_and_scheduler:142 - Total train steps: 16870
+2024-10-27 00:23:22.566 | GPU-5 | INFO    | trainer:train:290 - Train Epoch: 1 Loss: 1.8900856687135605
+2024-10-27 00:41:42.214 | GPU-5 | INFO    | trainer:train:296 - Train Eval Epoch: 1 Metrics: {'Not Main Process': 0.0}
+2024-10-27 00:42:32.753 | GPU-5 | INFO    | trainer:train:313 - Eval Epoch: 1 Metrics: {'Not Main Process': 0.0}
+2024-10-27 01:40:10.128 | GPU-5 | INFO    | trainer:train:290 - Train Epoch: 2 Loss: 1.4605808445910142
+2024-10-27 01:58:27.661 | GPU-5 | INFO    | trainer:train:296 - Train Eval Epoch: 2 Metrics: {'Not Main Process': 0.0}
+2024-10-27 01:59:18.080 | GPU-5 | INFO    | trainer:train:313 - Eval Epoch: 2 Metrics: {'Not Main Process': 0.0}
+2024-10-27 02:56:56.600 | GPU-5 | INFO    | trainer:train:290 - Train Epoch: 3 Loss: 1.2276179654550214
+2024-10-27 03:15:16.392 | GPU-5 | INFO    | trainer:train:296 - Train Eval Epoch: 3 Metrics: {'Not Main Process': 0.0}
+2024-10-27 03:16:06.914 | GPU-5 | INFO    | trainer:train:313 - Eval Epoch: 3 Metrics: {'Not Main Process': 0.0}
+2024-10-27 04:13:45.606 | GPU-5 | INFO    | trainer:train:290 - Train Epoch: 4 Loss: 1.0676214271247104
+2024-10-27 04:32:03.001 | GPU-5 | INFO    | trainer:train:296 - Train Eval Epoch: 4 Metrics: {'Not Main Process': 0.0}
+2024-10-27 04:32:53.422 | GPU-5 | INFO    | trainer:train:313 - Eval Epoch: 4 Metrics: {'Not Main Process': 0.0}
+2024-10-27 05:30:27.393 | GPU-5 | INFO    | trainer:train:290 - Train Epoch: 5 Loss: 0.9547134760361147
+2024-10-27 05:48:44.822 | GPU-5 | INFO    | trainer:train:296 - Train Eval Epoch: 5 Metrics: {'Not Main Process': 0.0}
+2024-10-27 05:49:35.242 | GPU-5 | INFO    | trainer:train:313 - Eval Epoch: 5 Metrics: {'Not Main Process': 0.0}
+2024-10-27 06:47:14.068 | GPU-5 | INFO    | trainer:train:290 - Train Epoch: 6 Loss: 0.8601050298325541
+2024-10-27 07:05:31.624 | GPU-5 | INFO    | trainer:train:296 - Train Eval Epoch: 6 Metrics: {'Not Main Process': 0.0}
+2024-10-27 07:06:22.044 | GPU-5 | INFO    | trainer:train:313 - Eval Epoch: 6 Metrics: {'Not Main Process': 0.0}
+2024-10-27 08:03:55.767 | GPU-5 | INFO    | trainer:train:290 - Train Epoch: 7 Loss: 0.7914640853861215
+2024-10-27 08:22:14.560 | GPU-5 | INFO    | trainer:train:296 - Train Eval Epoch: 7 Metrics: {'Not Main Process': 0.0}
+2024-10-27 08:23:05.062 | GPU-5 | INFO    | trainer:train:313 - Eval Epoch: 7 Metrics: {'Not Main Process': 0.0}
+2024-10-27 09:20:43.653 | GPU-5 | INFO    | trainer:train:290 - Train Epoch: 8 Loss: 0.7339782701778751
+2024-10-27 09:39:01.345 | GPU-5 | INFO    | trainer:train:296 - Train Eval Epoch: 8 Metrics: {'Not Main Process': 0.0}
+2024-10-27 09:39:51.772 | GPU-5 | INFO    | trainer:train:313 - Eval Epoch: 8 Metrics: {'Not Main Process': 0.0}
+2024-10-27 10:37:30.134 | GPU-5 | INFO    | trainer:train:290 - Train Epoch: 9 Loss: 0.6964593817307768
+2024-10-27 10:55:47.762 | GPU-5 | INFO    | trainer:train:296 - Train Eval Epoch: 9 Metrics: {'Not Main Process': 0.0}
+2024-10-27 10:56:38.189 | GPU-5 | INFO    | trainer:train:313 - Eval Epoch: 9 Metrics: {'Not Main Process': 0.0}
+2024-10-27 11:54:12.001 | GPU-5 | INFO    | trainer:train:290 - Train Epoch: 10 Loss: 0.671619554072336
+2024-10-27 12:12:30.032 | GPU-5 | INFO    | trainer:train:296 - Train Eval Epoch: 10 Metrics: {'Not Main Process': 0.0}
+2024-10-27 12:13:20.465 | GPU-5 | INFO    | trainer:train:313 - Eval Epoch: 10 Metrics: {'Not Main Process': 0.0}
+2024-10-27 12:13:20.478 | GPU-5 | INFO    | trainer:train:348 - Best Metric: {'train': {'metric': 0, 'epoch': 0}, 'eval': {'metric': 0, 'epoch': 0}, 'test': {'metric': 0, 'epoch': 0}}
+2024-10-27 12:13:20.998 | GPU-5 | INFO    | __main__:<module>:81 - Program Exited Normally
