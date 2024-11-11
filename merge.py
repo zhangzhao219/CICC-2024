@@ -9,7 +9,7 @@ from tqdm import tqdm
 
 RESULT_FOLDER = "result"
 DATA_FOLDER = "data"
-MODE = "val"
+MODE = "test"
 
 now_best_list = ['2024_10_27_21_51_59', '2024_10_27_05_51_30', '2024_10_27_22_00_00', '2024_10_27_22_04_43', '2024_10_30_11_32_21', '2024_10_29_09_56_33', '2024_10_26_23_25_05', '2024_10_26_01_14_18', '2024_10_30_11_42_32', '2024_10_27_12_13_29', '2024_10_28_07_30_06']
 
@@ -73,8 +73,8 @@ MERGE_FILE_LIST = [
     "2024_10_28_07_30_06",  # 0.34965055869741535
 ]
 
-# MERGE_FILE_LIST = [i for i in MERGE_FILE_LIST if i in now_best_list]
-# print(len(MERGE_FILE_LIST))
+MERGE_FILE_LIST = [i for i in MERGE_FILE_LIST if i in now_best_list]
+print(len(MERGE_FILE_LIST))
 
 
 emotion_dict = {
@@ -108,30 +108,30 @@ for index, file in enumerate(MERGE_FILE_LIST):
 
 result_data_list = np.array(result_data_list)
 
-TIMES = 1000000
-random.seed(0)
-def combine(temp_list):
-    end_list = []
-    for i in tqdm(range(10, len(temp_list)+1)):
-        for _ in tqdm(range(TIMES)):
-            a = random.choices([j for j in range(len(temp_list))], k=i)
-            now_list = [False for j in range(len(temp_list))]
-            for c2 in a:
-                now_list[c2] = True
-            end_list.append(np.array(now_list))
-    return end_list
-
-
+# TIMES = 1000000
+# random.seed(0)
 # def combine(temp_list):
 #     end_list = []
-#     for i in tqdm(range(2, len(temp_list) + 1)):
-#         a = combinations([j for j in range(len(temp_list))], i)
-#         for c in tqdm(list(a)):
+#     for i in tqdm(range(10, len(temp_list)+1)):
+#         for _ in tqdm(range(TIMES)):
+#             a = random.choices([j for j in range(len(temp_list))], k=i)
 #             now_list = [False for j in range(len(temp_list))]
-#             for c2 in c:
+#             for c2 in a:
 #                 now_list[c2] = True
 #             end_list.append(np.array(now_list))
 #     return end_list
+
+
+def combine(temp_list):
+    end_list = []
+    for i in tqdm(range(len(temp_list), len(temp_list) + 1)):
+        a = combinations([j for j in range(len(temp_list))], i)
+        for c in tqdm(list(a)):
+            now_list = [False for j in range(len(temp_list))]
+            for c2 in c:
+                now_list[c2] = True
+            end_list.append(np.array(now_list))
+    return end_list
 
 
 SUB_MERGE_FILE_LIST = combine(MERGE_FILE_LIST)
